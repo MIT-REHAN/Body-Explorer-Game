@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Body Explorer — Grade 5 Science</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/animations.css" />
+  <link rel="stylesheet" href="styles/zones.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="text-size-medium">
+  <!-- Global App Container -->
+  <div id="app">
+    <!-- GLOBAL NAVBAR -->
+    <header class="global-navbar">
+      <div class="nav-left">
+        <button id="global-btn-back" class="btn-back-nav hidden" onclick="goBack()" aria-label="Go Back">&larr; Back</button>
+      </div>
+      <div class="nav-title" id="nav-screen-title">Body Explorer</div>
+      <div class="nav-right">
+        <button id="btn-tts-global" class="nav-icon-btn" title="Read Text Aloud" onclick="readActiveText()" aria-label="Read Text Aloud">🔊</button>
+        <button class="nav-icon-btn" title="Open Settings" onclick="toggleSettingsModal()" aria-label="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- SCREEN: Landing (Entry Point) -->
+    <div id="screen-landing" class="screen active">
+      <div class="stars-bg"></div>
+      <header class="home-header">
+        <div class="logo">🫁</div>
+        <h1 class="game-title">Body<span>Explorer</span></h1>
+        <p class="game-subtitle">Interactive Biological Science Dashboard</p>
+      </header>
+      
+      <div class="landing-selection-container">
+        <!-- Card 1: Play Adventure Game -->
+        <div class="landing-card" onclick="showHome()" tabindex="0" title="Play Game" role="button">
+          <div class="landing-card-icon">🎮</div>
+          <h3>Adventure Game</h3>
+          <p>Explore 7 key body zones, complete mini-games, and test your knowledge in curriculum quizzes!</p>
+          <button class="btn-primary" style="margin:0 auto;">Play Game 🚀</button>
+        </div>
+
+        <!-- Card 2: Explore 3D Diagrams -->
+        <div class="landing-card" onclick="showExplore3D()" tabindex="0" title="Explore 3D Anatomy" role="button">
+          <div class="landing-card-icon">🧬</div>
+          <h3>Explore 3D Diagrams</h3>
+          <p>Interact with rotatable 3D models of the human body, the pulsating heart, and the complex brain lobes!</p>
+          <button class="btn-secondary" style="margin:0 auto; border-color:var(--accent4); color:var(--accent4);">Explore 3D 🔍</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN: Home / Map -->
+    <div id="screen-home" class="screen">
+      <div class="stars-bg"></div>
+      <header class="home-header">
+        <div class="logo">🫀</div>
+        <h1 class="game-title">Body<span>Explorer</span></h1>
+        <p class="game-subtitle">Grade 5 · Chapter 1 · Human Body & Health</p>
+      </header>
+      
+      <div class="body-map-container">
+        <div class="body-silhouette">
+          <div class="zone-btn locked" data-zone="1" style="top:12%;left:50%;" title="Organ Atlas" tabindex="0">
+            <span class="zone-icon">🫁</span><span class="zone-label">Organ Atlas</span>
+          </div>
+          <div class="zone-btn locked" data-zone="2" style="top:32%;left:50%;" title="Digestion Trail" tabindex="0">
+            <span class="zone-icon">🍎</span><span class="zone-label">Digestion</span>
+          </div>
+          <div class="zone-btn locked" data-zone="3" style="top:50%;left:70%;" title="Food Lab" tabindex="0">
+            <span class="zone-icon">🥦</span><span class="zone-label">Food Lab</span>
+          </div>
+          <div class="zone-btn locked" data-zone="4" style="top:25%;left:75%;" title="Skeleton Studio" tabindex="0">
+            <span class="zone-icon">🦴</span><span class="zone-label">Skeleton</span>
+          </div>
+          <div class="zone-btn locked" data-zone="5" style="top:65%;left:30%;" title="Muscle Gym" tabindex="0">
+            <span class="zone-icon">💪</span><span class="zone-label">Muscles</span>
+          </div>
+          <div class="zone-btn locked" data-zone="6" style="top:25%;left:25%;" title="Breath Lab" tabindex="0">
+            <span class="zone-icon">🫧</span><span class="zone-label">Breathing</span>
+          </div>
+          <div class="zone-btn locked" data-zone="7" style="top:75%;left:65%;" title="Fitness Park" tabindex="0">
+            <span class="zone-icon">🏃</span><span class="zone-label">Exercise</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-bar-home">
+        <span class="prog-label">Map Progress</span>
+        <div class="prog-track"><div class="prog-fill" id="home-progress"></div></div>
+        <span id="prog-text">0 / 7 Zones</span>
+      </div>
+      
+      <div class="stars-summary-home" id="stars-summary-text">
+        Total Stars: ⭐ 0 / 21
+      </div>
+    </div>
+
+    <!-- SCREEN: Zone Intro -->
+    <div id="screen-intro" class="screen">
+      <div class="intro-card">
+        <div id="intro-icon" class="intro-icon"></div>
+        <h2 id="intro-title"></h2>
+        <p id="intro-desc" class="tts-target"></p>
+        <div class="intro-objective-box">
+          <h3>Learning Objective</h3>
+          <p id="intro-objective"></p>
+        </div>
+        <button class="btn-primary pulse" onclick="startMiniGame()" style="margin: 0 auto;">Start Mission 🚀</button>
+      </div>
+    </div>
+
+    <!-- SCREEN: Mini-Game -->
+    <div id="screen-game" class="screen">
+      <div class="game-header">
+        <h2 id="game-title" class="tts-target"></h2>
+        <div class="score-badge">⭐ <span id="game-score">0</span></div>
+      </div>
+      <div id="game-area"></div>
+      <button class="btn-primary" id="btn-next-quiz" onclick="startQuiz()" style="display:none;margin:24px auto;">Take Quiz →</button>
+    </div>
+
+    <!-- SCREEN: Quiz -->
+    <div id="screen-quiz" class="screen">
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <span id="quiz-zone-label"></span>
+          <span id="quiz-progress-label">Q 1 / 5</span>
+        </div>
+        <div class="quiz-progress-track">
+          <div class="quiz-progress-fill" id="quiz-prog-bar"></div>
+        </div>
+        
+        <div id="quiz-question" class="quiz-question tts-target"></div>
+        <div id="quiz-options" class="quiz-options"></div>
+        
+        <div class="quiz-action-bar">
+          <button class="btn-secondary" id="btn-hint" onclick="useQuizHint()">💡 Use Hint (-10 pts)</button>
+          <span id="quiz-hints-used-label">Hints Used: 0 / 2</span>
+        </div>
+        
+        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+        <button class="btn-primary" id="btn-next-q" onclick="nextQuestion()" style="display:none;width:100%;">Next Question →</button>
+      </div>
+    </div>
+
+    <!-- SCREEN: Result -->
+    <div id="screen-result" class="screen">
+      <div class="result-card">
+        <div id="result-stars" class="result-stars"></div>
+        <h2 id="result-title"></h2>
+        <p id="result-score-text" class="tts-target"></p>
+        <div class="result-actions">
+          <button class="btn-secondary" onclick="retryZone()">🔄 Try Again</button>
+          <button class="btn-primary" onclick="showHome()">🗺 Map Dashboard</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN: Explore 3D Diagrams -->
+    <div id="screen-explore-3d" class="screen">
+      <div class="game-header">
+        <h2 style="font-family:'Baloo 2', cursive; color:var(--accent2); font-size:1.8rem;">3D Anatomy Explorer</h2>
+        <span style="font-size:0.95rem; color:var(--text-muted);">Interact, rotate, and click hotspots</span>
+      </div>
+
+      <div class="explore-3d-grid">
+        <!-- Item 1: Full Body 3D -->
+        <div class="explore-3d-card">
+          <h4>🧍 Interactive Human Body</h4>
+          <div class="canvas-3d-container" id="container-3d-body">
+            <canvas id="canvas-3d-body"></canvas>
+          </div>
+          <div class="controls-3d">
+            <label for="rotate-3d-body">Rotate Body</label>
+            <input type="range" id="rotate-3d-body" min="0" max="360" value="0" style="width:100%; margin:8px 0;" />
+            <div class="toggle-layers-3d">
+              <button class="layer-btn active" id="btn-layer-skeletal" onclick="setBodyLayer('skeletal')">Skeleton</button>
+              <button class="layer-btn" id="btn-layer-circulatory" onclick="setBodyLayer('circulatory')">Vessels</button>
+              <button class="layer-btn" id="btn-layer-digestive" onclick="setBodyLayer('digestive')">Digestive</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2: Heart 3D -->
+        <div class="explore-3d-card">
+          <h4>🫀 Interactive Heart</h4>
+          <div class="canvas-3d-container" id="container-3d-heart">
+            <canvas id="canvas-3d-heart"></canvas>
+          </div>
+          <div class="controls-3d">
+            <label for="rotate-3d-heart">Rotate Heart</label>
+            <input type="range" id="rotate-3d-heart" min="0" max="360" value="0" style="width:100%; margin:8px 0;" />
+            <button class="layer-btn" id="btn-heart-pulse" onclick="toggleHeartPulse()" style="margin-top:6px; width:100%;">❤️ Pulse Flow: On</button>
+          </div>
+        </div>
+
+        <!-- Item 3: Brain 3D -->
+        <div class="explore-3d-card">
+          <h4>🧠 Interactive Brain</h4>
+          <div class="canvas-3d-container" id="container-3d-brain">
+            <canvas id="canvas-3d-brain"></canvas>
+          </div>
+          <div class="controls-3d">
+            <label for="rotate-3d-brain">Rotate Brain</label>
+            <input type="range" id="rotate-3d-brain" min="0" max="360" value="0" style="width:100%; margin:8px 0;" />
+            <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; margin-top:8px;">Click lobes to discover functions!</p>
+          </div>
+        </div>
+
+        <!-- Item 4: Lungs 3D -->
+        <div class="explore-3d-card">
+          <h4>🫁 Interactive Lungs</h4>
+          <div class="canvas-3d-container" id="container-3d-lungs">
+            <canvas id="canvas-3d-lungs"></canvas>
+          </div>
+          <div class="controls-3d">
+            <label for="rotate-3d-lungs">Rotate Lungs</label>
+            <input type="range" id="rotate-3d-lungs" min="0" max="360" value="0" style="width:100%; margin:8px 0;" />
+            <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; margin-top:8px;">Click hotspots to learn breathing mechanics!</p>
+          </div>
+        </div>
+
+        <!-- Item 5: Stomach 3D -->
+        <div class="explore-3d-card">
+          <h4>🥣 Interactive Stomach</h4>
+          <div class="canvas-3d-container" id="container-3d-stomach">
+            <canvas id="canvas-3d-stomach"></canvas>
+          </div>
+          <div class="controls-3d">
+            <label for="rotate-3d-stomach">Rotate Stomach</label>
+            <input type="range" id="rotate-3d-stomach" min="0" max="360" value="0" style="width:100%; margin:8px 0;" />
+            <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; margin-top:8px;">Click acid pools and valves!</p>
+          </div>
+        </div>
+
+        <!-- Item 6: Skeleton 3D -->
+        <div class="explore-3d-card">
+          <h4>🦴 Interactive Skeleton</h4>
+          <div class="canvas-3d-container" id="container-3d-skeleton">
+            <canvas id="canvas-3d-skeleton"></canvas>
+          </div>
+          <div class="controls-3d">
+            <label for="rotate-3d-skeleton">Rotate Ribs & Spine</label>
+            <input type="range" id="rotate-3d-skeleton" min="0" max="360" value="0" style="width:100%; margin:8px 0;" />
+            <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; margin-top:8px;">Click bone joints and vertebrae!</p>
+          </div>
+        </div>
+      </div>
+
+      
+      <!-- Info Details Card -->
+      <div class="anatomy-info-card animate-fadeInUp" id="anatomy-info-card" style="margin-top:20px;">
+        <h4 id="anatomy-info-title" class="tts-target">3D Anatomy Explorer</h4>
+        <p id="anatomy-info-text" class="tts-target">Select different body layers, drag sliders to rotate, or click regions on the canvases to inspect anatomical hotspots and learn their scientific functions.</p>
+      </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="modal-overlay hidden" onclick="closeSettingsOnOverlay(event)">
+      <div class="modal-content animate-popIn">
+        <button class="modal-close-btn" onclick="toggleSettingsModal()" aria-label="Close Settings">&times;</button>
+        <h2>Settings & Accessibility</h2>
+        
+        <div class="settings-group">
+          <span class="settings-label">Sound Effects</span>
+          <label class="switch-container">
+            <input type="checkbox" id="setting-sound" onchange="handleSoundToggle(this.checked)" checked />
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-group">
+          <span class="settings-label">Text Size Zoom</span>
+          <select id="setting-text-size" onchange="handleTextSizeChange(this.value)" class="settings-select">
+            <option value="small">Small (Standard)</option>
+            <option value="medium" selected>Medium (Readable)</option>
+            <option value="large">Large (High Vision)</option>
+          </select>
+        </div>
+
+        <div class="settings-group">
+          <span class="settings-label">Voice Reading (TTS)</span>
+          <p class="settings-desc">Click the speaker icon 🔊 in the navbar on any screen to hear instructions read out loud.</p>
+        </div>
+
+        <button class="btn-secondary" onclick="unlockAllZones()" style="margin: 10px auto 0; width: 100%; font-size: 0.9rem; border-color: var(--accent2); color: var(--accent2);">🔓 Unlock All Zones (Testing)</button>
+        <button class="btn-secondary" onclick="window.location.reload()" style="margin: 10px auto 0; width: 100%; font-size: 0.9rem; border-color: var(--accent4); color: var(--accent4);">🔄 Refresh / Reload Game</button>
+        <button class="btn-secondary" onclick="resetGameProgress()" style="margin: 10px auto 0; width: 100%; font-size: 0.9rem; border-color: var(--accent1); color: var(--accent1);">🗑️ Reset Progress</button>
+        <button class="btn-primary" onclick="toggleSettingsModal()" style="margin: 10px auto 0; width: 100%;">Close Settings</button>
+      </div>
+    </div>
+
+    <!-- BADGE UNLOCK / CERTIFICATE MODAL -->
+    <div id="badge-modal" class="modal-overlay hidden">
+      <div class="modal-content badge-content animate-popIn">
+        <div class="badge-icon-large">🏆</div>
+        <h2>Grand Champion Certificate</h2>
+        <p>Congratulations, <strong>Body Explorer</strong>! You have mastered all 7 learning zones inside the Human Body & Health chapter!</p>
+        
+        <div class="badge-card-summary">
+          <p>Total Science Score: <strong id="badge-total-score">0</strong> / 700</p>
+          <p>Total Stars Earned: <strong id="badge-total-stars">0</strong> / 21</p>
+        </div>
+        
+        <div class="certificate-seal">🎓 Certified Grade 5 Biologist</div>
+
+        <button class="btn-primary" onclick="closeBadgeModal()" style="margin: 20px auto 0; width: 100%;">Awesome! 🚀</button>
+        <button class="btn-secondary" onclick="resetGameProgress()" style="margin: 10px auto 0; width: 100%; font-size: 0.95rem;">🔄 Reset Progress & Replay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Scripts -->
+  <script src="src/data/zones.js"></script>
+  <script src="src/data/quizData.js"></script>
+  <script src="src/utils/storage.js"></script>
+  <script src="src/utils/helpers.js"></script>
+  <script src="src/components/progressBar.js"></script>
+  <script src="src/components/stars.js"></script>
+  <script src="src/scenes/homeScene.js"></script>
+  <script src="src/scenes/introScene.js"></script>
+  <script src="src/scenes/gameScene.js"></script>
+  <script src="src/scenes/quizScene.js"></script>
+  <script src="src/scenes/resultScene.js"></script>
+  <script src="src/scenes/explore3D.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>
