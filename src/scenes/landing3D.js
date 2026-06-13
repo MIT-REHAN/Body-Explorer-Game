@@ -9,6 +9,10 @@ const Landing3D = {
   animationId: null,
 
   init() {
+    if (typeof THREE === "undefined") {
+      setTimeout(() => this.init(), 100);
+      return;
+    }
     this.initHero3D();
     this.setupScrollTrigger();
   },
@@ -20,8 +24,8 @@ const Landing3D = {
     // Clear previous canvas if any
     container.innerHTML = "";
 
-    const width = container.clientWidth || 400;
-    const height = container.clientHeight || 400;
+    const width = container.clientWidth || (container.parentElement ? container.parentElement.clientWidth : 380) || 380;
+    const height = container.clientHeight || (container.parentElement ? container.parentElement.clientHeight : 380) || 380;
 
     // Create scene, camera, renderer
     this.scene = new THREE.Scene();
