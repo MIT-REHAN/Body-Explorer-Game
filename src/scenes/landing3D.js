@@ -25,7 +25,7 @@ const Landing3D = {
 
     // Create scene, camera, renderer
     this.scene = new THREE.Scene();
-    
+
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     this.camera.position.z = 8;
 
@@ -62,7 +62,7 @@ const Landing3D = {
       const z = Math.cos(angle) * 2.8;
       const y = (i / 40) * 8 - 4;
       curvePoints.push(new THREE.Vector3(x, y, z));
-      
+
       // Draw sphere nodes on DNA
       const sphereGeo = new THREE.SphereGeometry(0.12, 8, 8);
       const sphereMat = new THREE.MeshBasicMaterial({ color: 0xcccccc, wireframe: false });
@@ -92,7 +92,7 @@ const Landing3D = {
     // Track resize
     window.addEventListener("resize", () => this.onWindowResize());
 
-    // Start render loop
+    // Start render loop by loop
     this.animate();
   },
 
