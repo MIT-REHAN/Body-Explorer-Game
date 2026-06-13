@@ -63,7 +63,10 @@ const QuizScene = {
 
     // Text to Speech
     setTimeout(() => {
-      window.SpeechManager.speak(question.question);
+      const progress = window.StorageManager.getProgress();
+      if (progress.settings.readQuestionsAnswers !== false) {
+        window.SpeechManager.speak(question.question);
+      }
     }, 400);
   },
 
@@ -113,7 +116,10 @@ const QuizScene = {
     feedbackEl.classList.remove("hidden");
 
     this.updateHintButtonState();
-    window.SpeechManager.speak(`Hint: ${hintText}`);
+    const progress = window.StorageManager.getProgress();
+    if (progress.settings.readQuestionsAnswers !== false) {
+      window.SpeechManager.speak(`Hint: ${hintText}`);
+    }
   },
 
   handleAnswerSelect(selectedIndex) {
@@ -138,7 +144,10 @@ const QuizScene = {
       feedbackEl.innerHTML = `<strong>🎉 Correct!</strong> ${question.explanation}`;
       window.SoundEffectPlayer.play("correct");
       this.correctCount++;
-      window.SpeechManager.speak(`Correct! ${question.explanation}`);
+      const progress = window.StorageManager.getProgress();
+      if (progress.settings.readQuestionsAnswers !== false) {
+        window.SpeechManager.speak(`Correct! ${question.explanation}`);
+      }
     } else {
       optionButtons[selectedIndex].classList.add("wrong");
       optionButtons[correctIndex].classList.add("correct");
@@ -148,7 +157,10 @@ const QuizScene = {
       
       // Deduct points for incorrect answer: 20 points per question, so a wrong answer costs 20 points
       this.score = Math.max(0, this.score - 20);
-      window.SpeechManager.speak(`Incorrect. Here is the fact: ${question.explanation}`);
+      const progress = window.StorageManager.getProgress();
+      if (progress.settings.readQuestionsAnswers !== false) {
+        window.SpeechManager.speak(`Incorrect. Here is the fact: ${question.explanation}`);
+      }
     }
 
     document.getElementById("btn-next-q").style.display = "block";

@@ -79,6 +79,9 @@ function updateNavbarUI() {
 function showLanding() {
   window.SpeechManager.stop();
   navigateTo("landing");
+  if (window.Landing3D) {
+    window.Landing3D.init();
+  }
 }
 
 function showHome() {
@@ -164,6 +167,9 @@ function toggleSettingsModal() {
     // Pre-fill inputs with stored values
     const progress = window.StorageManager.getProgress();
     document.getElementById("setting-sound").checked = progress.settings.sound;
+    if (document.getElementById("setting-read-tts")) {
+      document.getElementById("setting-read-tts").checked = progress.settings.readQuestionsAnswers !== false;
+    }
     document.getElementById("setting-text-size").value = progress.settings.textSize;
   }
 }
@@ -179,6 +185,16 @@ function handleSoundToggle(checked) {
   if (checked) {
     // Brief test chime
     window.SoundEffectPlayer.play("click");
+  }
+}
+
+function handleTtsToggle(checked) {
+  window.StorageManager.updateSettings("readQuestionsAnswers", checked);
+  if (checked) {
+    window.SoundEffectPlayer.play("click");
+    window.SpeechManager.speak("Auto-read is enabled.");
+  } else {
+    window.SpeechManager.stop();
   }
 }
 

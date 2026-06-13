@@ -29,7 +29,10 @@ const IntroScene = {
 
     // Speak description automatically if settings allow, but wait a moment
     setTimeout(() => {
-      window.SpeechManager.speak(`${zone.title}. ${zone.desc} Your objective is to ${zone.objective}.`);
+      const progress = window.StorageManager.getProgress();
+      if (progress.settings.readQuestionsAnswers !== false) {
+        window.SpeechManager.speak(`${zone.title}. ${zone.desc} Your objective is to ${zone.objective}.`);
+      }
     }, 400);
   }
 };

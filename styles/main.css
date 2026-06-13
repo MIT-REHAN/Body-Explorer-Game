@@ -2,9 +2,9 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-deep:    #0d1b2a;
-  --bg-mid:     #1a2e44;
-  --bg-card:    #1e3a56;
+  --bg-deep:    #000000;
+  --bg-mid:     #0b0c10;
+  --bg-card:    #121318;
   --accent1:    #ff6b6b;
   --accent2:    #ffd93d;
   --accent3:    #6bcb77;
@@ -13,7 +13,7 @@
   --text-light: #f0f4ff;
   --text-muted: #9ab0cc;
   --radius:     18px;
-  --shadow:     0 8px 32px rgba(0,0,0,0.4);
+  --shadow:     0 8px 32px rgba(0,0,0,0.6);
 }
 
 body {
@@ -32,6 +32,7 @@ body {
   position: relative;
 }
 .screen.active { display: block; }
+.screen:not(.active) { display: none !important; }
 
 /* ===== HOME ===== */
 .stars-bg {

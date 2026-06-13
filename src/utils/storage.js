@@ -7,7 +7,8 @@ const defaultProgress = {
   stars: {},       // zoneId -> stars earned (e.g. 1 -> 3)
   settings: {
     sound: true,
-    textSize: "medium" // small, medium, large
+    textSize: "medium", // small, medium, large
+    readQuestionsAnswers: true
   }
 };
 

@@ -52,7 +52,10 @@ const ResultScene = {
 
     // Speak results
     setTimeout(() => {
-      window.SpeechManager.speak(`${resultTitle}. ${praiseText}`);
+      const progress = window.StorageManager.getProgress();
+      if (progress.settings.readQuestionsAnswers !== false) {
+        window.SpeechManager.speak(`${resultTitle}. ${praiseText}`);
+      }
     }, 450);
   }
 };
